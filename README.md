@@ -1,7 +1,7 @@
 Antenna.
 
 Usage:
-    antennna listen <profile> <queue> <command>
+    antenna listen <profile> <queue> <command>
     antenna configure <profile> <queue> <command>
 
 The most stupidly simple way to scale an application is through a message queue,
@@ -15,17 +15,28 @@ Grab a message from a queue, run a command and if it worked, remove the message:
         1> antenna.log \
         2> antenna.err.log
 
-An easy way to see if everything is working would be to manually add a couple of 
-messages with the [SQS Management Console](https://console.aws.amazon.com/sqs/home), 
-and use `"cat >> log.txt"` as a command.
-
 Antenna will look for credentials in either `~/.aws/config` (this is where your
-AWS CLI credentials live) or `~/.boto`.
+[AWS CLI](http://aws.amazon.com/documentation/cli/) credentials live) or `~/.boto`
+if you're using [Boto](http://boto.readthedocs.org/) in Python.
 
     [profile my-profile-name]
     aws_access_key_id=<id>
     aws_secret_access_key=<secret>
     region=<region>
+
+An easy way to see if everything is working would be to manually add a couple of 
+messages with the [SQS Management Console](https://console.aws.amazon.com/sqs/home), 
+and use `"cat >> log.txt"` as a command.
+
+You can also add messages to the queue from the command line with the 
+[AWS CLI](http://aws.amazon.com/documentation/cli/)
+
+    # get your queue's endpoint if you only know its name
+    aws sqs get-queue-url --profile my-profile-name --queue-name my-queue | jq '.QueueUrl'
+    aws sqs send-message --queue-url my-queue-url --message-body my-message-body
+
+For more information, look at the 
+[AWS CLI documentation for SQS](http://docs.aws.amazon.com/cli/latest/reference/sqs/index.html)
 
 Install Antenna with `pip`, the Python package installer.
 
