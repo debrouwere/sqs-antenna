@@ -55,6 +55,8 @@ If you're on Ubuntu, you can run Antenna as a daemon by adding it to Upstart:
 
 """
 
+import os
+from textwrap import dedent
 from docopt import docopt
 
 
@@ -100,6 +102,16 @@ def listen(profile, queue, command):
                 queue.delete_message(message)
 
 
+def here(*segments):
+    return os.path.join(os.path.dirname(__file__), *segments)
+
+
+def configure(profile, queue, command):
+    config = open(here('templates/upstart.conf')).read()
+    command = command.replace('"', '\\"')
+    print config.format(**locals())
+
+
 def extract(d, whitelist=None):
     keys = [key.strip('<>') for key in d.keys()]
     d = dict(zip(keys, d.values()))
@@ -114,12 +126,10 @@ def main():
     arguments = docopt(__doc__, version='Antenna 0.1')
     kwargs = extract(arguments, ['profile', 'queue', 'command'])
 
-    if 'listen' in arguments:
+    if arguments.get('listen'):
         listen(**kwargs)
-    elif 'configure' in arguments:
-        # TODO: Upstart configuration template
-        del arguments['configure']
-        raise NotImplementedError()
+    elif arguments.get('configure'):
+        configure(**kwargs)
 
 
 if __name__ == '__main__':
