@@ -5,7 +5,7 @@ import antenna
 
 setup(
     name='sqs-antenna',
-    version="0.1.1",
+    version="0.1.2",
     description="Command-line tool that executes a command for each SQS message it receives.",
     long_description=open('README.rst').read(),
     author='Stijn Debrouwere',
