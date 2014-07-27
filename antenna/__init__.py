@@ -83,6 +83,8 @@ def listen(profile, queue, command):
         aws_secret_access_key=secret_key)
 
     queue = sqs.get_queue(queue)
+    if not queue:
+        raise ValueError, "Queue does not exist."
 
     while True:
         messages = queue.get_messages(1, wait_time_seconds=20)
