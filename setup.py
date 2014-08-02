@@ -14,6 +14,10 @@ setup(
     packages=find_packages(),
     zip_safe=False,
     license='ISC', 
+    install_requires=[
+        'boto',
+        'docopt'
+    ],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
